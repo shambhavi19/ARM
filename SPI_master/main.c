@@ -16,9 +16,9 @@ int main(void)
 	spi_master_init();
 	while(1)
 	{
-		for(int i=0; i<8; i++ )
+		for(int i=0; i<256; i++ )
 		{
-			spi_transmit(-10);
+			spi_transmit(i);
 			delay(2000);
 		}
 
@@ -72,6 +72,20 @@ void delay(long int time)
 		n++;
 	}
 }
+
+void TempSpiTransmit(char b)
+{
+	SPI1->DR=b;
+	while(!(SPI1->SR & SPI_SR_TXE));
+}
+
+void SpiTransmitString(unsigned char* string)
+{
+	while(*string!='\0')
+	TempSpiTransmit(*string++);
+
+}
+
 
 
 
